@@ -1,6 +1,6 @@
 from smbus2 import SMBus
 import time
-
+ 
 # Functions
 def get_normalized_bit(value, bit_index):
     return (value >> bit_index) & 1
