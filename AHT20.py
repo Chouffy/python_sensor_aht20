@@ -15,8 +15,9 @@ AHT20_STATUSBIT_CALIBRATED = 3              # The 3rd bit is the CAL (calibratio
 class AHT20:
     # I2C communication driver for AHT20, using only smbus2
 
-    def __init__(self):
+    def __init__(self, BusNum=1):
         # Initialize AHT20
+        self.BusNum = BusNum
         self.cmd_soft_reset()
 
         # Check for calibration, if not done then do and wait 10 ms
@@ -27,27 +28,27 @@ class AHT20:
         
     def cmd_soft_reset(self):
         # Send the command to soft reset
-        with SMBus(1) as i2c_bus:
+        with SMBus(self.BusNum) as i2c_bus:
             i2c_bus.write_i2c_block_data(AHT20_I2CADDR, 0x0, AHT20_CMD_SOFTRESET)
         time.sleep(0.04)    # Wait 40 ms after poweron
         return True
 
     def cmd_initialize(self):
         # Send the command to initialize (calibrate)
-        with SMBus(1) as i2c_bus:
+        with SMBus(self.BusNum) as i2c_bus:
             i2c_bus.write_i2c_block_data(AHT20_I2CADDR, 0x0 , AHT20_CMD_INITIALIZE)
         return True
 
     def cmd_measure(self):
         # Send the command to measure
-        with SMBus(1) as i2c_bus:
+        with SMBus(self.BusNum) as i2c_bus:
             i2c_bus.write_i2c_block_data(AHT20_I2CADDR, 0, AHT20_CMD_MEASURE)
         time.sleep(0.08)    # Wait 80 ms after measure
         return True
 
     def get_status(self):
         # Get the full status byte
-        with SMBus(1) as i2c_bus:
+        with SMBus(self.BusNum) as i2c_bus:
             return i2c_bus.read_i2c_block_data(AHT20_I2CADDR, 0x0, 1)[0]
         return True
 
@@ -72,7 +73,7 @@ class AHT20:
         # TODO: do CRC check
 
         # Read data and return it
-        with SMBus(1) as i2c_bus:
+        with SMBus(self.BusNum) as i2c_bus:
             return i2c_bus.read_i2c_block_data(AHT20_I2CADDR, 0x0, 7)
 
     def get_temperature(self):
