@@ -4,6 +4,9 @@ import datetime, time
 # Initialize an AHT20
 aht20 = AHT20.AHT20()
 
+# A different bus can be specified with the BusNum variable
+# aht20 = AHT20.AHT20(BusNum = 1)
+
 while 1:
 
     # Fill a string with date, humidity and temperature

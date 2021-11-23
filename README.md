@@ -26,7 +26,7 @@ Pin # | Pin Name | Connection
 
 ## Notes
 
-* The I2C bus is fixed to `1`, as it's the default one for the Raspberry Pi.
+* The I2C bus is `1` by default, as it's the default one for the Raspberry Pi. Another bus can be specified with the `BusNum` variable when calling the module.
 
 ## Sources
 
