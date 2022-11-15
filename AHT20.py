@@ -88,9 +88,18 @@ class AHT20:
         return all_data, isCRC8_pass
         
 
+
     def get_temperature(self):
         # Get a measure, select proper bytes, return converted data
         measure = self.get_measure()
+        measure = ((measure[3] & 0xF) << 16) | (measure[4] << 8) | measure[5]
+        measure = measure / (pow(2,20))*200-50
+        return measure
+    def get_temperature_crc8(self):
+        isCRC8Pass = False
+        while (not isCRC8Pass): 
+            measure, isCRC8Pass = self.get_measure()
+            time.sleep(80 * 10**-3)
         measure = ((measure[3] & 0xF) << 16) | (measure[4] << 8) | measure[5]
         measure = measure / (pow(2,20))*200-50
         return measure
@@ -101,3 +110,14 @@ class AHT20:
         measure = (measure[1] << 12) | (measure[2] << 4) | (measure[3] >> 4)
         measure = measure * 100 / pow(2,20)
         return measure
+
+    def get_humidity_crc8(self):
+        isCRC8Pass = False
+        while (not isCRC8Pass): 
+            measure, isCRC8Pass = self.get_measure()
+            time.sleep(80 * 10**-3)
+        measure = (measure[1] << 12) | (measure[2] << 4) | (measure[3] >> 4)
+        measure = measure * 100 / pow(2,20)
+        return measure
+
+
