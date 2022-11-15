@@ -106,7 +106,7 @@ class AHT20:
 
     def get_humidity(self):
         # Get a measure, select proper bytes, return converted data
-        measure = self.get_measure()
+        measure = self.get_measure_CRC8()
         measure = (measure[1] << 12) | (measure[2] << 4) | (measure[3] >> 4)
         measure = measure * 100 / pow(2,20)
         return measure
@@ -114,7 +114,7 @@ class AHT20:
     def get_humidity_crc8(self):
         isCRC8Pass = False
         while (not isCRC8Pass): 
-            measure, isCRC8Pass = self.get_measure()
+            measure, isCRC8Pass = self.get_measure_CRC8()
             time.sleep(80 * 10**-3)
         measure = (measure[1] << 12) | (measure[2] << 4) | (measure[3] >> 4)
         measure = measure * 100 / pow(2,20)
