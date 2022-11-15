@@ -1,5 +1,6 @@
 from smbus2 import SMBus
 import time
+from crc8_helper import AHT20_crc8_check
 
 def get_normalized_bit(value, bit_index):
     # Return only one bit from value indicated in bit_index
@@ -75,6 +76,17 @@ class AHT20:
         # Read data and return it
         with SMBus(self.BusNum) as i2c_bus:
             return i2c_bus.read_i2c_block_data(AHT20_I2CADDR, 0x0, 7)
+
+    def get_measure_CRC8(self):
+        """
+        This function will calculate crc8 code with G(x) = x8 + x5 + x4 + 1 -> 0x131(0x31), Initial value = 0xFF. No XOROUT.
+        return: all_data (1 bytes status + 2.5 byes humidity + 2.5 bytes temperature + 1 bytes crc8 code), isCRC8_pass
+        """
+        all_data = self.get_measure()
+        isCRC8_pass = AHT20_crc8_check(all_data)
+
+        return all_data, isCRC8_pass
+        
 
     def get_temperature(self):
         # Get a measure, select proper bytes, return converted data
