@@ -28,6 +28,11 @@ Pin # | Pin Name | Connection
 
 * The I2C bus is `1` by default, as it's the default one for the Raspberry Pi. Another bus can be specified with the `BusNum` variable when calling the module.
 
+## Authors
+
+* [Chouffy](https://github.com/Chouffy/) for the original module
+* [Zifeng1997](https://github.com/xzf89718) for the CRC8 checker
+
 ## Sources
 
 * [Adafruit original driver with CircuitPython](https://github.com/adafruit/Adafruit_CircuitPython_AHTx0)
